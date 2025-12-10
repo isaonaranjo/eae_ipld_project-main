@@ -38,10 +38,10 @@ st.write("#")
 # TODO: Ex. 1.1: Get the minimum and maximum values for the vertical and horizontal ranges, so the size of the img_arr array -----
 
 min_height = 0 
-max_height = None   # TODO: Replace None with the maximum height of the image using np.shape() function
+max_height = img_arr.shape[0]   # TODO: Replace None with the maximum height of the image using np.shape() function
 
 min_width = 0
-max_width = None    # TODO: Replace None with the maximum width of the image using np.shape() function   
+max_width = img_arr.shape[1]  # TODO: Replace None with the maximum width of the image using np.shape() function   
 
 
 # ----- Creating the sliders to receive the user input with the dimensions to crop the image ----- 
