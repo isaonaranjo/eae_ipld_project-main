@@ -1,15 +1,13 @@
 # The library you have to use
 import numpy as np
-
-# Some extra libraries to build the webapp and deal with images and files
 import streamlit as st
 import io
 from PIL import Image
 
-
 # ----- Left menu -----
 with st.sidebar:
-    st.image("eae_img.png", width=200)
+    st.image("eae_ipld_project-main\eae_img.png", width=200)
+    #st.image("C:\Users\miona\OneDrive\Documents\Documentos - EAE\eae_ipld_project-main\eae_ipld_project-main\eae_img.png", width=200)
     st.write("Interactive Project to open, crop, display and save images using NumPy, PIL and Matplotlib.")
 
 
@@ -24,14 +22,20 @@ img = st.file_uploader("Upload an image:", type=["png", "jpg", "jpeg"])
 
 if img is None:
     is_example = True
-    with Image.open("data/starry_night.png") as img:
+    with Image.open("eae_ipld_project-main\data\starry_night.png") as img:
+        #eae_ipld_project-main\data\starry_night.png
         img_arr = np.array(img)
 else:
     with Image.open(img) as img:
         img_arr = np.array(img)
 
 # Displaying the image
-st.image(img_arr, caption="Original Image" if not is_example else "Original example image", width="content")
+# Displaying the image
+st.image(
+    img_arr,
+    caption="Original Image" if not is_example else "Original example image",
+    use_column_width=True
+)
 st.write("#")
 
 
@@ -45,7 +49,7 @@ max_width = img_arr.shape[1]  # TODO: Replace None with the maximum width of the
 
 
 # ----- Creating the sliders to receive the user input with the dimensions to crop the image ----- 
-if type(max_height) == int and type(max_width) == int:
+if isinstance(max_height, int) and isinstance(max_width, int):
     
     cols1 = st.columns([4, 1, 4])
 
@@ -63,12 +67,10 @@ else:
 
 # TODO: Ex. 1.3: Crop the image array img_arr using the crop_min_h, crop_max_h, crop_min_w and crop_max_w values -----
 
-crop_arr = None  # TODO: Generate the crop array into a new variable, use NumPy array slicing
+crop_arr = img_arr[crop_min_h:crop_max_h, crop_min_w:crop_max_w]
 
-
-# ----- Displaying the cropped image and creating a download button to download the image -----
-
-if type(crop_arr) == np.ndarray:
+# ----- Mostrar recorte y botón de descarga -----
+if isinstance(crop_arr, np.ndarray):
     st.image(crop_arr, caption="Cropped Image", use_column_width=True)
 
     buf = io.BytesIO()
@@ -76,9 +78,12 @@ if type(crop_arr) == np.ndarray:
     cropped_img_bytes = buf.getvalue()
 
     cols2 = st.columns([4, 1, 4])
-    file_name = cols2[0].text_input("Chose a File Name:", "cropped_image") + ".png"
+    file_name = cols2[0].text_input("Choose a File Name:", "cropped_image") + ".png"
 
-    st.download_button(f"Download the image `{file_name}`", cropped_img_bytes, file_name=file_name)
-
+    st.download_button(
+        f"Download the image `{file_name}`",
+        cropped_img_bytes,
+        file_name=file_name
+    )
 else:
     st.subheader("⚠️ You still need to develop the Ex 1.3.")
