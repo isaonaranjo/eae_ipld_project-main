@@ -6,8 +6,7 @@ from PIL import Image
 
 # ----- Left menu -----
 with st.sidebar:
-    st.image("eae_ipld_project-main\eae_img.png", width=200)
-    #st.image("C:\Users\miona\OneDrive\Documents\Documentos - EAE\eae_ipld_project-main\eae_ipld_project-main\eae_img.png", width=200)
+    st.image("eae_img.png", width=200)
     st.write("Interactive Project to open, crop, display and save images using NumPy, PIL and Matplotlib.")
 
 
@@ -22,8 +21,7 @@ img = st.file_uploader("Upload an image:", type=["png", "jpg", "jpeg"])
 
 if img is None:
     is_example = True
-    with Image.open("eae_ipld_project-main\data\starry_night.png") as img:
-        #eae_ipld_project-main\data\starry_night.png
+    with Image.open("data/starry_night.png") as img:
         img_arr = np.array(img)
 else:
     with Image.open(img) as img:
