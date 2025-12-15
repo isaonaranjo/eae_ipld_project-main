@@ -19,7 +19,6 @@ def home_page():
         st.write("**Author:** Maria Isabel Ortiz Naranjo") 
         st.write("**Instructor:** [Enric Domingo](https://github.com/enricd)")
 
-
     # ----- Top title -----
     st.html("""<div style="text-align: center;"><h1 style="text-align: center;">👋 Hi! My name is Isabel</h1></div>""")  # TODO: Add your name
 
@@ -62,7 +61,7 @@ def home_page():
 
     - 🏂 <Your Hobbies>
 
-    - 📫 How to reach me: <Your Email>
+    - 📫 How to reach me: mionaranjo@gmail.com
 
     - 🏠 Barcelona
     """)
