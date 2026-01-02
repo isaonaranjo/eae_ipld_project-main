@@ -51,19 +51,19 @@ def home_page():
 
     # TODO: Modify and adapt the following lines to your info, you can add or remove some details if you want
     st.write("""
-    - 🧑‍💻 I am a computer science engineer
+    - 🧑‍💻 I am a **Data Analyst and Computer Science Engineer**, currently specializing in **Data Analytics & Big Data**.
 
-    - 🛩️ prev: <Previous Experience, Background or Studies>
+    - 🛩️ **Previous experience:** Business Analyst II in Regulatory Compliance, working with fee-schedule data, SQL databases, Python automation, and data validation processes.
+             
+    - ❤️ **Passionate about:** data-driven decision making, analytics, technology, and continuous learning.
 
-    - ❤️ <Your Passion and/or Interests>
+    - 🤖 **Personal projects:** data analysis projects using Python (Pandas, NumPy, Matplotlib), academic assignments, and exploratory data visualizations.
 
-    - 🤖 <Your Personal Projects>
-
-    - 🏂 <Your Hobbies>
+    - 🏂 **Hobbies:** going to the gym, walking by the sea, traveling, and creative writing.
 
     - 📫 How to reach me: mionaranjo@gmail.com
 
-    - 🏠 Barcelona
+    - 🏠 **Location:** Barcelona
     """)
 
     # Feel free to add other points like your Linkedin, Github, Social Media, etc.
