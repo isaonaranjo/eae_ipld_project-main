@@ -76,4 +76,43 @@ pg = st.navigation([
     st.Page("pages/02_netflix_data_analysis.py", title="Netflix Data Analysis", icon="🎬"),
     st.Page("pages/03_temperatures_dashboard.py", title="Temperatures Dashboard", icon="🌦️"),
 ])
+
+# ----- Custom CSS (Purple theme) -----
+st.markdown("""
+    <style>
+    /* Main background */
+    .stApp {
+        background-color: #f4f0fa;
+    }
+
+    /* Sidebar background */
+    section[data-testid="stSidebar"] {
+        background-color: #5e3ea1;
+    }
+
+    /* Sidebar text */
+    section[data-testid="stSidebar"] * {
+        color: white;
+    }
+
+    /* Headers */
+    h1, h2, h3, h4 {
+        color: #4b2c82;
+    }
+
+    /* Buttons */
+    .stButton>button {
+        background-color: #7b4fd6;
+        color: white;
+        border-radius: 8px;
+    }
+
+    .stButton>button:hover {
+        background-color: #5e3ea1;
+        color: white;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
+# Run the app
 pg.run()
