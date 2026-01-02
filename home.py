@@ -6,6 +6,7 @@ import base64
 st.set_page_config(
     page_title="Isabel Ortiz - Portfolio",
     page_icon="📊",
+    layout="wide"
 )
 
 
@@ -79,39 +80,59 @@ pg = st.navigation([
 
 # ----- Custom CSS (Purple theme) -----
 st.markdown("""
-    <style>
-    /* Main background */
-    .stApp {
-        background-color: #f4f0fa;
-    }
+<style>
+/* Page background */
+.stApp {
+  background: linear-gradient(180deg, #f7f3ff 0%, #ffffff 70%);
+}
 
-    /* Sidebar background */
-    section[data-testid="stSidebar"] {
-        background-color: #5e3ea1;
-    }
+/* Reduce top padding (Streamlit default is huge) */
+.block-container {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  max-width: 1100px;
+}
 
-    /* Sidebar text */
-    section[data-testid="stSidebar"] * {
-        color: white;
-    }
+/* Sidebar */
+section[data-testid="stSidebar"] {
+  background: linear-gradient(180deg, #5e3ea1 0%, #432a78 100%);
+}
+section[data-testid="stSidebar"] * { color: white !important; }
 
-    /* Headers */
-    h1, h2, h3, h4 {
-        color: #4b2c82;
-    }
+/* Sidebar nav buttons look nicer */
+section[data-testid="stSidebar"] [data-testid="stSidebarNav"] span {
+  font-weight: 600;
+}
+section[data-testid="stSidebar"] a {
+  border-radius: 10px;
+}
 
-    /* Buttons */
-    .stButton>button {
-        background-color: #7b4fd6;
-        color: white;
-        border-radius: 8px;
-    }
+/* Titles */
+h1, h2, h3 { color: #3d246c; }
+h4 { color: #4b2c82; }
 
-    .stButton>button:hover {
-        background-color: #5e3ea1;
-        color: white;
-    }
-    </style>
+/* “Cards” style for content blocks */
+.purple-card {
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(94, 62, 161, 0.15);
+  box-shadow: 0 8px 24px rgba(61, 36, 108, 0.08);
+  border-radius: 18px;
+  padding: 18px 20px;
+}
+
+/* Center hero section tighter */
+.hero {
+  text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 1.2rem;
+}
+.role {
+  text-align: center;
+  font-size: 1.05rem;
+  color: #4b2c82;
+  margin-top: 0.2rem;
+}
+</style>
 """, unsafe_allow_html=True)
 
 # Run the app
