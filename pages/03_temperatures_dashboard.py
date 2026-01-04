@@ -71,7 +71,6 @@ max_country = temps_df["AvgTemperatureCelsius"].idxmax()
 min_row = temps_df.loc[min_country]
 max_row = temps_df.loc[max_country]
 
-# If Country repeats, loc returns multiple rows (DataFrame). Take the first one.
 if isinstance(min_row, pd.DataFrame):
     min_row = min_row.iloc[0]
 if isinstance(max_row, pd.DataFrame):
