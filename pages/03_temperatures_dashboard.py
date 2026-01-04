@@ -44,16 +44,27 @@ with st.expander("Check the complete dataset:"):
 
 # TODO: Ex 3.2: Create a new column called `AvgTemperatureCelsius` that contains the temperature in Celsius degrees.
 # temps_df["AvgTemperatureCelsius"] = ...       # uncomment this line to complete it
-
+temps_df.insert(
+    temps_df.columns.get_loc("AvgTemperatureFahrenheit") + 1,
+    "AvgTemperatureCelsius",
+    (temps_df["AvgTemperatureFahrenheit"] - 32) * 5 / 9
+)
 
 # ----- Extracting some basic information from the dataset -----
 
 # TODO: Ex 3.3: How many different cities are there? Provide a list of them.
-unique_countries_list = None
+unique_countries_list = temps_df["City"].unique().tolist()
+
+print(f"Number of unique cities: {len(unique_countries_list)}")
+print("List of cities:", unique_countries_list)
+
 
 # TODO: Ex 3.4: Which are the minimum and maximum dates?
-min_date = None
-max_date = None
+min_date = temps_df["Date"].min()  # done
+max_date = temps_df["Date"].max()  # done
+
+print(f"Min date: {min_date}")  
+print(f"Max date: {max_date}") 
 
 # TODO:  Ex 3.5: What are the global minimum and maximum temperatures? Find the city and the date of each of them.
 min_temp = None
