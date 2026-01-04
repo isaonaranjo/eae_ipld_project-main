@@ -63,14 +63,16 @@ max_date = temps_df["Date"].max()  # done
 
 
 # TODO:  Ex 3.5: What are the global minimum and maximum temperatures? Find the city and the date of each of them.
-min_temp = temps_df["AvgTemperatureCelsius"].idxmin()  # done
-max_temp = temps_df["AvgTemperatureCelsius"].idxmax()  # done
+min_idx = temps_df["AvgTemperatureCelsius"].idxmin()
+max_idx = temps_df["AvgTemperatureCelsius"].idxmax()
 
-min_temp_city = temps_df.loc[min_temp, "AvgTemperatureCelsius"]  # done
-min_temp_date = temps_df.loc[max_temp, "AvgTemperatureCelsius"]  # done
+min_temp = float(temps_df.loc[min_idx, "AvgTemperatureCelsius"])
+min_temp_city = temps_df.loc[min_idx, "City"]
+min_temp_date = temps_df.loc[min_idx, "Date"]
 
-max_temp_city =  temps_df.loc[min_temp, "City"]  # done
-max_temp_date = temps_df.loc[max_temp, "City"]  # done
+max_temp = float(temps_df.loc[max_idx, "AvgTemperatureCelsius"])
+max_temp_city = temps_df.loc[max_idx, "City"]
+max_temp_date = temps_df.loc[max_idx, "Date"]
 
 # ----- Displaying the extracted information metrics -----
 
