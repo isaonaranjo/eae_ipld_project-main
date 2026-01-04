@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 # Some extra libraries for date conversions and build the webapp
 import streamlit as st
+import os
 
 
 # ----- Left menu -----
@@ -22,16 +23,16 @@ st.divider()
 
 @st.cache_data
 def load_data():
+    data_path = "data/cities_temperatures.csv"
 
-    data_path = "../data/cities_temperatures.csv"
+    if not os.path.exists(data_path):
+        st.error(f"File not found: {data_path}. Check that the file is in your repo under /data.")
+        st.stop()
 
-    temps_df = pd.read_csv(data_path, index_col="Country")  # TODO: Ex 3.1: Load the dataset using Pandas, use the data_path variable and set the index column to "show_id"
-
-    if temps_df is not None:
-        temps_df["Date"] = pd.to_datetime(temps_df["Date"]).dt.date
-
-    return temps_df  # a Pandas DataFrame
-
+    temps_df = pd.read_csv(data_path, index_col="Country")  
+    
+    temps_df["Date"] = pd.to_datetime(temps_df["Date"]).dt.date
+    return temps_df
 
 temps_df = load_data()
 
