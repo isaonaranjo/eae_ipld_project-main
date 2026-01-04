@@ -28,11 +28,8 @@ st.divider()
 # ----- Loading the dataset -----
 @st.cache_data
 def load_data():
-    data_path = "data/cities_temperatures.csv"
 
-    if not os.path.exists(data_path):
-        st.error(f"File not found: {data_path}. Check that the file is in your repo under /data.")
-        st.stop()
+    data_path = "data/cities_temperatures.csv"
 
     temps_df = pd.read_csv(data_path, index_col="Country")
 
