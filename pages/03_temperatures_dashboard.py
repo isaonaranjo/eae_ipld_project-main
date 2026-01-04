@@ -10,8 +10,14 @@ import os
 # ----- Left menu -----
 with st.sidebar:
     st.image("eae_img.png", width=200)
-    st.write("Interactive Project to load a dataset with information about the daily temperatures of 10 cities around the world, extract some insights usign Pandas and displaying them with Matplotlib.")
-    st.write("Data extracted from: https://www.kaggle.com/datasets/sudalairajkumar/daily-temperature-of-major-cities (with some cleaning and modifications).")
+    st.write(
+        "Interactive Project to load a dataset with information about the daily temperatures of 10 cities around the world, "
+        "extract some insights using Pandas and displaying them with Matplotlib."
+    )
+    st.write(
+        "Data extracted from: https://www.kaggle.com/datasets/sudalairajkumar/daily-temperature-of-major-cities "
+        "(with some cleaning and modifications)."
+    )
 
 
 # ----- Title of the page -----
@@ -20,7 +26,6 @@ st.divider()
 
 
 # ----- Loading the dataset -----
-
 @st.cache_data
 def load_data():
     data_path = "data/cities_temperatures.csv"
@@ -29,68 +34,75 @@ def load_data():
         st.error(f"File not found: {data_path}. Check that the file is in your repo under /data.")
         st.stop()
 
-    temps_df = pd.read_csv(data_path, index_col="Country")  
-    
-    temps_df["Date"] = pd.to_datetime(temps_df["Date"]).dt.date
+    temps_df = pd.read_csv(data_path, index_col="Country")
+
+    if "Date" in temps_df.columns:
+        temps_df["Date"] = pd.to_datetime(temps_df["Date"]).dt.date
+
     return temps_df
+
 
 temps_df = load_data()
 
-# Displaying the dataset in a expandable table
+# Displaying the dataset in an expandable table
 with st.expander("Check the complete dataset:"):
     st.dataframe(temps_df)
 
 
 # ----- Data transformation -----
+# Ex 3.2: Create a new column called AvgTemperatureCelsius
+if "AvgTemperatureCelsius" not in temps_df.columns:
+    temps_df.insert(
+        temps_df.columns.get_loc("AvgTemperatureFahrenheit") + 1,
+        "AvgTemperatureCelsius",
+        (temps_df["AvgTemperatureFahrenheit"] - 32) * 5 / 9
+    )
 
-# TODO: Ex 3.2: Create a new column called `AvgTemperatureCelsius` that contains the temperature in Celsius degrees.
-# temps_df["AvgTemperatureCelsius"] = ...       # uncomment this line to complete it
-temps_df.insert(
-    temps_df.columns.get_loc("AvgTemperatureFahrenheit") + 1,
-    "AvgTemperatureCelsius",
-    (temps_df["AvgTemperatureFahrenheit"] - 32) * 5 / 9
-)
 
 # ----- Extracting some basic information from the dataset -----
+# Ex 3.3: How many different cities are there? Provide a list of them.
+unique_cities_list = temps_df["City"].dropna().unique().tolist()
 
-# TODO: Ex 3.3: How many different cities are there? Provide a list of them.
-unique_countries_list = temps_df["City"].unique().tolist()
+# Ex 3.4: Which are the minimum and maximum dates?
+min_date = temps_df["Date"].min()
+max_date = temps_df["Date"].max()
 
+# Ex 3.5: Global min and max temperatures + city + date
+min_country = temps_df["AvgTemperatureCelsius"].idxmin()
+max_country = temps_df["AvgTemperatureCelsius"].idxmax()
 
-# TODO: Ex 3.4: Which are the minimum and maximum dates?
-min_date = temps_df["Date"].min()  # done
-max_date = temps_df["Date"].max()  # done
+min_row = temps_df.loc[min_country]
+max_row = temps_df.loc[max_country]
 
-
-# TODO:  Ex 3.5: What are the global minimum and maximum temperatures? Find the city and the date of each of them.
-min_pos = temps_df["AvgTemperatureCelsius"].idxmin()
-max_pos = temps_df["AvgTemperatureCelsius"].idxmax()
-
-min_row = temps_df.loc[min_pos]
-max_row = temps_df.loc[max_pos]
+# If Country repeats, loc returns multiple rows (DataFrame). Take the first one.
+if isinstance(min_row, pd.DataFrame):
+    min_row = min_row.iloc[0]
+if isinstance(max_row, pd.DataFrame):
+    max_row = max_row.iloc[0]
 
 min_temp = float(min_row["AvgTemperatureCelsius"])
+min_temp_city = min_row["City"]
+min_temp_date = min_row["Date"]
+
 max_temp = float(max_row["AvgTemperatureCelsius"])
+max_temp_city = max_row["City"]
+max_temp_date = max_row["Date"]
 
-min_temp_city = temps_df.loc[min_temp, "AvgTemperatureCelsius"]  # done
-min_temp_date = temps_df.loc[max_temp, "AvgTemperatureCelsius"]  # done
-
-max_temp_city =  temps_df.loc[min_temp, "City"]  # done
-max_temp_date = temps_df.loc[max_temp, "City"]  # done
 
 # ----- Displaying the extracted information metrics -----
-
 st.write("##")
 st.header("Basic Information")
 
 cols1 = st.columns([4, 1, 6])
-if unique_countries_list is not None:
-    cols1[0].dataframe(pd.Series(unique_countries_list, name="Cities"), width="content")
+
+# Cities list
+if unique_cities_list is not None:
+    cols1[0].dataframe(pd.Series(unique_cities_list, name="Cities"), width="content")
 else:
     cols1[0].write("⚠️ You still need to develop the Ex 3.3.")
 
+# Min / Max block
 if min_date is not None and max_date is not None:
-
     cols1[2].write("#")
 
     min_temp_text = f"""
@@ -106,35 +118,37 @@ if min_date is not None and max_date is not None:
     *{max_temp_city} on {max_temp_date}*
     """
     cols1[2].write(max_temp_text)
-
 else:
     cols1[2].write("⚠️ You still need to develop the Ex 3.5.")
 
 
 # ----- Plotting the temperatures over time for the selected cities -----
-
 st.write("##")
 st.header("Comparing the Temperatures of the Cities")
 
-if unique_countries_list is not None:
+if unique_cities_list is not None:
     # Getting the list of cities to compare from the user
-    selected_cities = st.multiselect("Select the cities to compare:", unique_countries_list, default=["Buenos Aires", "Dakar"], max_selections=4)
+    selected_cities = st.multiselect(
+        "Select the cities to compare:",
+        unique_cities_list,
+        default=["Buenos Aires", "Dakar"],
+        max_selections=4
+    )
 
     cols2 = st.columns([6, 1, 6])
-
-    start_date = cols2[0].date_input("Select the start date:", pd.to_datetime("2009-01-01").date())     # Getting the start date from the user
-    end_date = cols2[2].date_input("Select the end date:", pd.to_datetime("2018-12-31").date())         # Getting the end date from the user
+    start_date = cols2[0].date_input("Select the start date:", pd.to_datetime("2009-01-01").date())
+    end_date = cols2[2].date_input("Select the end date:", pd.to_datetime("2018-12-31").date())
 
 else:
     st.subheader("⚠️ You still need to develop the Ex 3.3.")
+    selected_cities = []
 
-if unique_countries_list is not None and len(selected_cities) > 0:
+
+if unique_cities_list is not None and len(selected_cities) > 0:
 
     c = st.container(border=True)
 
-    # TODO: Ex 3.7: Plot the temperatures over time for the selected cities for the selected time period,
-    # every city has to be its own line with a different color.
-
+    # ----- Ex 3.7: Line plot (one line per city) -----
     fig = plt.figure(figsize=(10, 5))
 
     for city in selected_cities:
@@ -158,10 +172,7 @@ if unique_countries_list is not None and len(selected_cities) > 0:
 
     c.pyplot(fig)
 
-
-    # TODO: Make a histogram of the temperature reads of a list of selected cities, for the selected time period, 
-    # every city has to be its own distribution with a different color.
-
+    # ----- Histogram (one distribution per city) -----
     fig = plt.figure(figsize=(10, 5))
 
     for city in selected_cities:
@@ -173,7 +184,7 @@ if unique_countries_list is not None and len(selected_cities) > 0:
         ]
 
         plt.hist(
-            city_df_period["AvgTemperatureCelsius"],
+            city_df_period["AvgTemperatureCelsius"].dropna(),
             bins=20,
             alpha=0.5,
             label=city
@@ -186,7 +197,5 @@ if unique_countries_list is not None and len(selected_cities) > 0:
 
     c.pyplot(fig)
 
-
-
-
-
+else:
+    st.info("Select at least one city to display the plots.")
