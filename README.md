@@ -25,5 +25,7 @@
 - The deployed web app of this specific repository with its current uncompleted state (exercises to be done): https://eae-ipld-project.streamlit.app/
   
 - A demo of a finished version of this project: https://eae-ipld-demo.streamlit.app/
+  
+- Final link: https://eaeipldproject-main-lrhhtrbh9mw6c9rjdsoew3.streamlit.app/
 
 ---
